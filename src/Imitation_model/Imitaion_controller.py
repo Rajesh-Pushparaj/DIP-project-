@@ -7,7 +7,7 @@ from keras.models import model_from_json
 import os
 
 # initial state of the pendulum
-x0 = np.array([0.0,np.pi,np.pi,0.0,0.0,0.0]) # initial state of the pendulum
+x0 = np.array([0.0,np.pi,np.pi,0.1,0.1,0.1]) # initial state of the pendulum
 
 # Load the pendulum
 pendulum = pendulum_simulator(x0)
@@ -17,14 +17,19 @@ pendulum = pendulum_simulator(x0)
 # mpc.x0 = x0
 # mpc.set_initial_guess()
 
+#path
+
+root = os.getcwd()
+path_json  = root + '\Imitation_model.json'
+path_h5 = root + '\Imitation_model.h5'
 
 # load json and create model
-json_file = open(r"C:\Users\HP\Documents\GitHub\DIP-project-\src\Imitation_model.json")
+json_file = open(path_json ,'r')
 loaded_model_json = json_file.read()
 json_file.close()
 model = model_from_json(loaded_model_json)
 # load weights into new model
-model.load_weights(r"C:\Users\HP\Documents\GitHub\DIP-project-\src\Imitation_model.h5")
+model.load_weights(path_h5)
 print("Loaded model from disk")
 
 
