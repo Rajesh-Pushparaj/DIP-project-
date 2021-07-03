@@ -7,7 +7,7 @@ from keras.models import model_from_json
 import os
 
 # initial state of the pendulum
-x0 = np.array([0.0,np.pi,np.pi,0.1,0.1,0.1]) # initial state of the pendulum
+x0 = np.array([0.5,np.pi,np.pi,1.0,0.0,0.0]) # initial state of the pendulum
 
 # Load the pendulum
 pendulum = pendulum_simulator(x0)
