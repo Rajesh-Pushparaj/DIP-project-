@@ -30,8 +30,8 @@ model1.load_weights(Model1_path_h5)
 print("Loaded model 1 from disk")
 
 
-#Change the model name as need
-Model2_path_json  = root + '\Imitation_model.json'
+
+Model2_path_json  = root + '\Imitation_model.json' #Change the model name as need
 Model2_path_h5 = root + '\Imitation_model.h5'
 
 # load json and create model
