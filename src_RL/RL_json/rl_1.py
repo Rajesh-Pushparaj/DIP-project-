@@ -7,7 +7,7 @@ from keras.models import model_from_json
 import os
 
 # initial state of the pendulum
-x0 = np.array([0.0,np.pi,np.pi,0.0,0.0,0.0]) # initial state of the pendulum
+x0 = np.array([0.0,0.0,0.0,0.0,0.0,0.0]) # initial state of the pendulum
 
 # Load the pendulum
 pendulum = pendulum_simulator(x0)
@@ -19,14 +19,22 @@ pendulum = pendulum_simulator(x0)
 
 
 # load json and create model
-json_file = open(r"C:\Users\HP\Documents\Machine Learning\1 Project\code_project\RL_json\pendulum_target_actor.json")
+json_file = open(r"C:\Users\HP\Documents\GitHub\DIP-project-\src_RL\RL_json\pendulum_target_actor.json")
 loaded_model_json = json_file.read()
 json_file.close()
 model = model_from_json(loaded_model_json)
 # load weights into new model
-model.load_weights(r"C:\Users\HP\Documents\Machine Learning\1 Project\code_project\RL_json\pendulum_target_actor.h5")
+model.load_weights(r"C:\Users\HP\Documents\GitHub\DIP-project-\src_RL\RL_json\pendulum_target_actor.h5")
 print("Loaded model from disk")
 
+# # load json and create model
+# json_file = open(r"C:\Users\HP\Documents\GitHub\DIP-project-\src_RL\RL_json\pendulum_actor.json")
+# loaded_model_json = json_file.read()
+# json_file.close()
+# model = model_from_json(loaded_model_json)
+# # load weights into new model
+# model.load_weights(r"C:\Users\HP\Documents\GitHub\DIP-project-\src_RL\RL_json\pendulum_actor.h5")
+# print("Loaded model from disk")
 
 #  simulate pendulum for random inputs
 for _ in range(250):

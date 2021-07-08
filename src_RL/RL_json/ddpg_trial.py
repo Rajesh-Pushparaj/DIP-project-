@@ -143,8 +143,10 @@ def get_actor():
     last_init = tf.random_uniform_initializer(minval=-0.003, maxval=0.003)
 
     inputs = layers.Input(shape=(num_states,))
-    out = layers.Dense(256, activation="tanh")(inputs)
-    out = layers.Dense(256, activation="tanh")(out)
+    out = layers.Dense(128, activation="tanh")(inputs)
+    out = layers.Dense(128, activation="tanh")(out)
+    out = layers.Dense(128, activation="tanh")(out)
+    out = layers.Dense(128, activation="tanh")(out)
     outputs = layers.Dense(1, activation="tanh", kernel_initializer=last_init)(out)
 
     # Our upper bound is 2.0 for Pendulum.
@@ -167,8 +169,10 @@ def get_critic():
     # Both are passed through seperate layer before concatenating
     concat = layers.Concatenate()([state_output, action_out])
 
-    out = layers.Dense(256, activation="tanh")(concat)
-    out = layers.Dense(256, activation="tanh")(out)
+    out = layers.Dense(128, activation="tanh")(concat)
+    out = layers.Dense(128, activation="tanh")(out)
+    out = layers.Dense(128, activation="tanh")(out)
+    out = layers.Dense(128, activation="tanh")(out)
     outputs = layers.Dense(1)(out)
 
     # Outputs single value for give state-action
@@ -209,7 +213,7 @@ actor_lr = 0.001
 critic_optimizer = tf.keras.optimizers.Adam(critic_lr)
 actor_optimizer = tf.keras.optimizers.Adam(actor_lr)
 
-total_episodes = 110
+total_episodes = 300
 # Discount factor for future rewards
 gamma = 0.99
 # Used to update target networks
@@ -232,7 +236,7 @@ for ep in range(total_episodes):
     while True:
         # Uncomment this to see the Actor in action
         # But not in a python notebook.
-        # env.render()
+        env.render()
 
         tf_prev_state = tf.expand_dims(tf.convert_to_tensor(prev_state), 0)
 
@@ -241,7 +245,7 @@ for ep in range(total_episodes):
         state, reward, done, info = env.step(action)
 
         buffer.record((prev_state, action, reward, state))
-        episodic_reward += reward
+        episodic_reward += reward*0.1
 
         buffer.learn()
         update_target(target_actor.variables, actor_model.variables, tau)
@@ -289,8 +293,23 @@ with open("pendulum_target_critic.json", "w") as json_file:
 target_critic.save_weights("pendulum_target_critic.h5")
 print("Saved model to disk")
 
-# Save the weights
+#Save model to file
+actor_model.save("pendulum_target_actor",'./')
+#target_critic.save("pendulum_target_critic",'./')
+
+from keras.models import model_from_json
+# serialize model to JSON
+pendulum_actor_json = actor_model.to_json()
+with open("pendulum_actor.json", "w") as json_file:
+    json_file.write(pendulum_actor_json)
+# serialize weights to HDF5
 actor_model.save_weights("pendulum_actor.h5")
+print("Saved model to disk")
+
+
+
+# Save the weights
+#actor_model.save_weights("pendulum_actor.h5")
 critic_model.save_weights("pendulum_critic.h5")
 
 #target_actor.save_weights("pendulum_target_actor.h5")
