@@ -143,10 +143,10 @@ def get_actor():
     last_init = tf.random_uniform_initializer(minval=-0.003, maxval=0.003)
 
     inputs = layers.Input(shape=(num_states,))
-    out = layers.Dense(128, activation="tanh")(inputs)
-    out = layers.Dense(128, activation="tanh")(out)
-    out = layers.Dense(128, activation="tanh")(out)
-    out = layers.Dense(128, activation="tanh")(out)
+    out = layers.Dense(256, activation="tanh")(inputs)
+    #out = layers.Dense(128, activation="tanh")(out)
+    #out = layers.Dense(128, activation="tanh")(out)
+    out = layers.Dense(256, activation="tanh")(out)
     outputs = layers.Dense(1, activation="tanh", kernel_initializer=last_init)(out)
 
     # Our upper bound is 2.0 for Pendulum.
@@ -169,10 +169,10 @@ def get_critic():
     # Both are passed through seperate layer before concatenating
     concat = layers.Concatenate()([state_output, action_out])
 
-    out = layers.Dense(128, activation="tanh")(concat)
-    out = layers.Dense(128, activation="tanh")(out)
-    out = layers.Dense(128, activation="tanh")(out)
-    out = layers.Dense(128, activation="tanh")(out)
+    out = layers.Dense(256, activation="tanh")(concat)
+    #out = layers.Dense(128, activation="tanh")(out)
+    #out = layers.Dense(128, activation="tanh")(out)
+    out = layers.Dense(256, activation="tanh")(out)
     outputs = layers.Dense(1)(out)
 
     # Outputs single value for give state-action
@@ -189,6 +189,8 @@ def policy(state, noise_object):
 
     # We make sure action is within bounds
     legal_action = np.clip(sampled_actions, lower_bound, upper_bound)
+    
+    #print([np.squeeze(legal_action)])
 
     return [np.squeeze(legal_action)]
     
@@ -213,9 +215,9 @@ actor_lr = 0.001
 critic_optimizer = tf.keras.optimizers.Adam(critic_lr)
 actor_optimizer = tf.keras.optimizers.Adam(actor_lr)
 
-total_episodes = 300
+total_episodes = 200
 # Discount factor for future rewards
-gamma = 0.99
+gamma = 0.9
 # Used to update target networks
 tau = 0.005
 
@@ -243,9 +245,9 @@ for ep in range(total_episodes):
         action = policy(tf_prev_state, ou_noise)
         # Recieve state and reward from environment.
         state, reward, done, info = env.step(action)
-
+        
         buffer.record((prev_state, action, reward, state))
-        episodic_reward += reward*0.1
+        episodic_reward += reward
 
         buffer.learn()
         update_target(target_actor.variables, actor_model.variables, tau)
