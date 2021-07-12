@@ -7,7 +7,7 @@ from keras.models import model_from_json
 import os
 
 # initial state of the pendulum
-x0 = np.array([0.5,np.pi,np.pi,1.0,0.0,0.0]) # initial state of the pendulum
+x0 = np.array([0.2,-np.pi/2,-np.pi/2,0.6,0.5,0.5]) # initial state of the pendulum
 
 # Load the pendulum
 pendulum = pendulum_simulator(x0)
@@ -34,7 +34,7 @@ print("Loaded model from disk")
 
 
 #  simulate pendulum for random inputs
-for _ in range(250):
+for _ in range(500):
 	x_in = pd.DataFrame(x0)
 	# compute optimal control input via MPC
 	u0 = model.predict(x_in.T)

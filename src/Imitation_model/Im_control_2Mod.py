@@ -7,7 +7,7 @@ from keras.models import model_from_json
 import os
 
 # initial state of the pendulum
-x0 = np.array([0.5,np.pi,np.pi,1.0,0.0,0.0]) # initial state of the pendulum
+x0 = np.array([0.0,np.pi/2,np.pi/2,0.3,0.3,0.0]) # initial state of the pendulum
 
 # Load the pendulum
 pendulum = pendulum_simulator(x0)
@@ -17,8 +17,8 @@ root = os.getcwd()
 
 #Load models 
 
-Model1_path_json  = root + '\Imitation_model.json'
-Model1_path_h5 = root + '\Imitation_model.h5'
+Model1_path_json  = root + '\Imitation_model_1.json'
+Model1_path_h5 = root + '\Imitation_model_1.h5'
 
 # load json and create model
 json_file = open(Model1_path_json ,'r')
@@ -31,8 +31,8 @@ print("Loaded model 1 from disk")
 
 
 
-Model2_path_json  = root + '\Imitation_model.json' #Change the model name as need
-Model2_path_h5 = root + '\Imitation_model.h5'
+Model2_path_json  = root + '\Imitation_model_2.json' #Change the model name as need
+Model2_path_h5 = root + '\Imitation_model_2.h5'
 
 # load json and create model
 json_file = open(Model2_path_json ,'r')
