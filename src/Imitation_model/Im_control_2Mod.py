@@ -47,7 +47,7 @@ print("Loaded model 2 from disk")
 for _ in range(250):
 	x_in = pd.DataFrame(x0)
 	# compute optimal control input via MPC
-	if ((x0[1] <= np.pi/8)and(x0[2] <= np.pi/8)) and ((x0[1] >= -np.pi/8)and(x0[2] >= -np.pi/8)):
+	if ((x0[1] <= np.pi/8)and(x0[2] <= np.pi/8)) and ((x0[1] >= -np.pi/8)and(x0[2] >= -np.pi/8)) and x0[3]<0.5 and x0[4]<0.5:
 		u0 = model2.predict(x_in.T)
 	else:
 		u0 = model1.predict(x_in.T)
